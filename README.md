@@ -5,7 +5,7 @@
 
 ## Installation
 
-Install using bower: `bower install Meravici\paper-select-or-other`
+Install using bower: `bower install --save Meravici/paper-select-or-other`
 
 ## Usage
 
