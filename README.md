@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/Meravici/paper-select-or-other.svg?branch=master)](https://travis-ci.org/Meravici/paper-select-or-other)
 # \<paper-select-or-other\>
 
 
