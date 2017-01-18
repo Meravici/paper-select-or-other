@@ -1,7 +1,7 @@
 language: node_js
 sudo: required
 before_script:
-  - npm install -g bower polylint web-component-tester
+  - npm install -g bower polymer-cli web-component-tester
   - bower install
   - polymer lint --no-follow-dependencies --input paper-select-or-other.html
   - polymer lint --no-follow-dependencies --input dropdown-menu.html
