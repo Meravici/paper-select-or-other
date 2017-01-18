@@ -1,0 +1,73 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-styles/paper-styles.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-item/paper-item.html">
+
+
+<dom-module id="dropdown-menu">
+    <template>
+        <style>
+            :host {
+                display: block;
+                @apply(--paper-font-common-base);
+                font-family: sans-serif;
+                @apply(--layout-horizontal);
+            }
+
+            paper-dropdown-menu {
+                @apply(--layout-flex);
+            }
+        </style>
+        <paper-dropdown-menu label="{{label}}" disabled$="[[disabled]]"
+                             hidden$="[[hidden]]">
+            <paper-listbox class="dropdown-content" attr-for-selected="data-value" selected="{{selected}}"
+                           disabled$="[[disabled]]">
+                <template is="dom-repeat" items="{{items}}">
+                    <paper-item data-value="{{item}}">{{item}}</paper-item>
+                </template>
+                <paper-item data-value="Other">Other</paper-item>
+            </paper-listbox>
+        </paper-dropdown-menu>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'dropdown-menu',
+            properties: {
+                items: {
+                    type: Array,
+                    observer: "_itemsChanged"
+                },
+
+                label: {
+                    type: String
+                },
+
+                selected: {
+                    type: String,
+                    notify: true
+                }
+            },
+
+            ready: function () {
+                this.reset();
+            },
+
+            reset: function () {
+                this._itemsChanged(this.items);
+            },
+
+            focus: function () {
+                this.$$("paper-dropdown-menu").$$('paper-input').focus();
+            },
+
+            _itemsChanged: function (items) {
+                if (items && items.length > 0)
+                    this.set("selected", items[0]);
+                else
+                    this.set("selected", "Other");
+            }
+        })
+    </script>
+</dom-module>

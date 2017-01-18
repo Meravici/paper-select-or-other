@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>paper-select-or-other test</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+    <script src="../../iron-test-helpers/mock-interactions.js"></script>
+
+    <link rel="import" href="../paper-select-or-other.html">
+</head>
+<body>
+<test-fixture id="basic">
+    <template>
+        <paper-select-or-other></paper-select-or-other>
+    </template>
+</test-fixture>
+
+<script>
+    suite('paper-select-or-other', function () {
+        test('instantiating the element works', function () {
+            var element = fixture('basic');
+            assert.equal(element.is, 'paper-select-or-other');
+        });
+
+        test('Should be input on empty list', function (done) {
+            var element = fixture('basic');
+            flush(function () {
+                expect(element.$$('paper-input').hidden).to.equal(false);
+                expect(element.$$('paper-input').value).to.equal("");
+                done();
+            })
+        });
+
+        test('Should not fail when clearing custom input on empty items', function (done) {
+            var element = fixture('basic');
+            flush(function () {
+                MockInteractions.tap(element.$$('paper-icon-button'));
+                done();
+            });
+        });
+
+        test('Should preselect first element', function (done) {
+            var element = fixture('basic');
+            element.items = ['a', 'b'];
+            flush(function () {
+                expect(element.value).to.equal('a');
+                done();
+            });
+        });
+
+        test('Should select element when tapped', function (done) {
+            var element = fixture('basic');
+            element.items = ['a', 'b'];
+            flush(function () {
+                MockInteractions.tap(element);
+                MockInteractions.tap(element.querySelectorAll('paper-item')[1]);
+                expect(element.value).to.equal('b');
+                done();
+            });
+        });
+
+        test('Should display empty input when other selected', function (done) {
+            var element = fixture('basic');
+            element.items = ['a', 'b'];
+            flush(function () {
+                MockInteractions.tap(element);
+                MockInteractions.tap(element.querySelectorAll('paper-item')[2]);
+                expect(element.value).to.equal('');
+                expect(element.$$('paper-input').hidden).to.equal(false);
+                expect(element.$$('paper-input').value).to.equal("");
+                done();
+            });
+        });
+
+        test('Value should be input text', function (done) {
+            var element = fixture('basic');
+            element.items = ['a', 'b'];
+            flush(function () {
+                MockInteractions.tap(element);
+                MockInteractions.tap(element.querySelectorAll('paper-item')[2]);
+                element.$$('paper-input').set('value', "val");
+                expect(element.value).to.equal('val');
+                done();
+            });
+        });
+
+        test('input should be focused when other is selected', function(done){
+            var element = fixture('basic');
+            element.items = ['a', 'b'];
+            flush(function () {
+                MockInteractions.tap(element);
+                MockInteractions.tap(element.querySelectorAll('paper-item')[2]);
+                expect(document.activeElement).to.equal(element.$$('paper-input'));
+                done();
+            });
+        });
+
+        test('DropDown menu should be focused after clear', function(done){
+            var element = fixture('basic');
+            element.items = ['a', 'b'];
+            flush(function () {
+                MockInteractions.tap(element);
+                MockInteractions.tap(element.querySelectorAll('paper-item')[2]);
+                MockInteractions.tap(element.$$('paper-icon-button'));
+                expect(document.activeElement).to.equal(element.$$("dropdown-menu").$$("paper-dropdown-menu").$$('paper-input'));
+                done();
+            });
+        })
+    });
+</script>
+</body>
+</html>
