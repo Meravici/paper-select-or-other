@@ -33,10 +33,10 @@
             }
         </style>
 
-        <dropdown-menu label="[[label]]" items="[[items]]" selected="{{selectedItem}}" disabled$="[[disabled]]"
-                       hidden$="[[other]]"></dropdown-menu>
+        <dropdown-menu label="[[label]]" items="[[items]]" selected="{{_selectedItem}}" disabled$="[[disabled]]"
+                       hidden$="[[_other]]"></dropdown-menu>
 
-        <paper-input label="Other {{label}}" value="{{value}}" hidden$="[[!other]]" disabled$="{{disabled}}">
+        <paper-input label="Other {{label}}" value="{{value}}" hidden$="[[!_other]]" disabled$="{{disabled}}">
             <paper-icon-button suffix on-tap="reset" icon="clear" alt="clear"
                                title="clear" disabled$="{{disabled}}"></paper-icon-button>
         </paper-input>
@@ -60,13 +60,17 @@
                     notify: true
                 },
 
-                selectedItem: {
+                label: {
+                    type: String
+                },
+
+                _selectedItem: {
                     type: String,
                     notify: true,
                     observer: "_onSelect"
                 },
 
-                other: {
+                _other: {
                     type: Boolean,
                     value: false,
                     notify: true
@@ -85,17 +89,17 @@
             _onSelect: function (selected) {
                 if (selected) {
                     if (selected == "Other") {
-                        this.set("other", true);
+                        this.set("_other", true);
                         this.$$("paper-input").set("value", "");
                         this.$$("paper-input").focus();
                     } else {
-                        this.set("other", false);
+                        this.set("_other", false);
                         this.$$("dropdown-menu").focus();
 
                         this.$$("paper-input").set("value", selected);
                     }
                 } else {
-                    this.set("other", true);
+                    this.set("_other", true);
                     this.$$("paper-input").focus();
                     this.$$("paper-input").set("value", "");
                 }
