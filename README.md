@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/Meravici/paper-select-or-other.svg?branch=master)](https://travis-ci.org/Meravici/paper-select-or-other)
 # \<paper-select-or-other\>
 
-`paper-select-or-other` is built upon `paper-dropdown-menu` and gives you the ability to have a custom input field alongside with predefined list of items
+`paper-select-or-other` is a polymer element built upon `paper-dropdown-menu` and gives you the ability to have a custom input field alongside with predefined list of items
 
 ## Installation
 
