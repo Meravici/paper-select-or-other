@@ -3,7 +3,8 @@ sudo: required
 before_script:
   - npm install -g bower polylint web-component-tester
   - bower install
-  - polylint
+  - polymer lint --no-follow-dependencies --input paper-select-or-other.html
+  - polymer lint --no-follow-dependencies --input dropdown-menu.html
 node_js: '6'
 addons:
   firefox: latest
