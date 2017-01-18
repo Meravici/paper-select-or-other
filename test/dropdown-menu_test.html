@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>dropdown-menu test</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+    <script src="../../iron-test-helpers/mock-interactions.js"></script>
+
+    <link rel="import" href="../dropdown-menu.html">
+</head>
+<body>
+<test-fixture id="basic">
+    <template>
+        <dropdown-menu></dropdown-menu>
+    </template>
+</test-fixture>
+
+<script>
+    suite('dropdown-menu', function () {
+        test('instantiating the element works', function () {
+            var element = fixture('basic');
+            assert.equal(element.is, 'dropdown-menu');
+        });
+
+        test('should preselect "other" when no items', function (done) {
+            var element = fixture('basic');
+            flush(function () {
+                expect(element.selected).to.equal('Other');
+                done();
+            })
+        });
+
+        test('should preselect "other" when empty items', function (done) {
+            var element = fixture('basic');
+            element.items = [];
+            flush(function () {
+                expect(element.selected).to.equal('Other');
+                done();
+            })
+        });
+
+        test('should preselect first element of items', function (done) {
+            var element = fixture('basic');
+            element.items = ['first'];
+            flush(function () {
+                expect(element.selected).to.equal('first');
+                done();
+            })
+        });
+
+        test('should select other when tapped on it', function(done){
+            var element = fixture('basic');
+            element.items = ['first'];
+            flush(function () {
+                MockInteractions.tap(element);
+                MockInteractions.tap(element);
+                MockInteractions.tap(element.querySelectorAll('paper-item')[1]);
+                expect(element.selected).to.equal('Other');
+                done();
+            })
+        });
+
+        test('should select first element of items after reset', function (done) {
+            var element = fixture('basic');
+            element.items = ['first'];
+            flush(function () {
+                MockInteractions.tap(element);
+                MockInteractions.tap(element);
+                MockInteractions.tap(element.querySelectorAll('paper-item')[1]);
+                element.reset();
+                expect(element.selected).to.equal('first');
+                done();
+            })
+        });
+
+        test('should not crash when calling reset on undefined items', function(){
+            var element = fixture('basic');
+
+        })
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="dropdown-menu.html">
+<!--
+`paper-select-or-other`
+
+
+@demo demo/index.html 
+-->
+
+<dom-module id="paper-select-or-other">
+    <template>
+
+        <style>
+            :host {
+                display: block;
+                @apply(--paper-font-common-base);
+                font-family: sans-serif;
+                @apply(--layout-horizontal);
+            }
+
+            paper-icon-button {
+                color: var(--paper-red-300);
+                --paper-icon-button-ink-color: var(--paper-red-a100);
+                width: 23px; /* 15px + 2*4px for padding */
+                height: 23px;
+                padding: 0 4px;
+            }
+
+            dropdown-menu, paper-input {
+                @apply(--layout-flex);
+            }
+        </style>
+
+        <dropdown-menu label="[[label]]" items="[[items]]" selected="{{selectedItem}}" disabled$="[[disabled]]"
+                       hidden$="[[other]]"></dropdown-menu>
+
+        <paper-input label="Other {{label}}" value="{{value}}" hidden$="[[!other]]" disabled$="{{disabled}}">
+            <paper-icon-button suffix on-tap="reset" icon="clear" alt="clear"
+                               title="clear" disabled$="{{disabled}}"></paper-icon-button>
+        </paper-input>
+
+
+    </template>
+
+    <script>
+        Polymer({
+
+            is: 'paper-select-or-other',
+
+            properties: {
+                items: {
+                    type: Array,
+                    notify: true
+                },
+
+                value: {
+                    type: String,
+                    notify: true
+                },
+
+                selectedItem: {
+                    type: String,
+                    notify: true,
+                    observer: "_onSelect"
+                },
+
+                other: {
+                    type: Boolean,
+                    value: false,
+                    notify: true
+                }
+            },
+
+            ready: function () {
+                this.reset();
+            },
+
+            reset: function () {
+                this.$$("paper-input").set("value", "");
+                this.$$("dropdown-menu").reset();
+            },
+
+            _onSelect: function (selected) {
+                if (selected) {
+                    if (selected == "Other") {
+                        this.set("other", true);
+                        this.$$("paper-input").set("value", "");
+                        this.$$("paper-input").focus();
+                    } else {
+                        this.set("other", false);
+                        this.$$("dropdown-menu").focus();
+
+                        this.$$("paper-input").set("value", selected);
+                    }
+                } else {
+                    this.set("other", true);
+                    this.$$("paper-input").focus();
+                    this.$$("paper-input").set("value", "");
+                }
+            }
+        });
+    </script>
+</dom-module>
