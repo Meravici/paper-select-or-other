@@ -9,30 +9,11 @@ Install using bower: `bower install Meravici\paper-select-or-other`
 
 ## Usage
 
-<!---
-```
-<custom-element-demo>
-  <template is="dom-bind" id="Demo">
-    <script src="../webcomponentsjs/webcomponents-lite.js"></script>
-    <link rel="import" href="paper-select-or-other.html">
-    <next-code-block></next-code-block>
-  </template>
-  <script>
-    Demo.dinosaurs = [
-        'allosaurus',
-        'brontosaurus',
-        'carcharodontosaurus',
-        'diplodocus'
-    ];
-  </script>
-</custom-element-demo>
-```
--->
-
 ```html
-<paper-select-or-other label="Label"
-                       items="[[dinosaurs]]">
-</paper-select-or-other>
+ <paper-select-or-other label="Label"
+                        items="[[items]]"
+                        disabled$='[[disabled]]'>
+ </paper-select-or-other>
 ```
 
 Detailed docs with demo can be found [here](https://meravici.github.io/paper-select-or-other/components/paper-select-or-other/)
