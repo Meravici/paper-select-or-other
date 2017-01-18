@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
@@ -15,23 +15,23 @@
 
     <style is="custom-style" include="demo-pages-shared-styles">
     </style>
-  </head>
-  <body>
-    <div class="vertical-section-container centered">
-      <h3>Basic paper-select-or-other demo</h3>
-      <demo-snippet>
+</head>
+<body>
+<div class="vertical-section-container centered">
+    <h3>Basic paper-select-or-other demo</h3>
+    <demo-snippet>
         <template is="dom-bind" id="Demo">
-          <paper-select-or-other id="bla" items="[[bla]]"></paper-select-or-other>
+            <paper-select-or-other id="dinosaurs" items="[[dinosaurs]]"></paper-select-or-other>
         </template>
-      </demo-snippet>
-      <demo-snippet>
-        <template>
-          <dropdown-menu></dropdown-menu>
-        </template>
-      </demo-snippet>
-    </div>
-  <script>
-      Demo.bla = ['a', 'b'];
-  </script>
-  </body>
+    </demo-snippet>
+</div>
+<script>
+    Demo.dinosaurs = [
+        'allosaurus',
+        'brontosaurus',
+        'carcharodontosaurus',
+        'diplodocus'
+    ]
+</script>
+</body>
 </html>
