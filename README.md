@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/Meravici/paper-select-or-other.svg?branch=master)](https://travis-ci.org/Meravici/paper-select-or-other)
 # \<paper-select-or-other\>
 
-`paper-select-or-other` is built upon `paper-dropdown-menu` and gives you the ability to have a custom input field alongside with predefined list of items
+`paper-select-or-other` is a polymer element built upon `paper-dropdown-menu` and gives you the ability to have a custom input field alongside with predefined list of items
 
 ## Installation
 
@@ -9,23 +9,11 @@ Install using bower: `bower install Meravici\paper-select-or-other`
 
 ## Usage
 
-<!---
-```
-<custom-element-demo>
-  <template>
-    <script src="../webcomponentsjs/webcomponents-lite.js"></script>
-    <link rel="import" href="paper-select-or-other.html">
-    <next-code-block></next-code-block>
-  </template>
-</custom-element-demo>
-```
--->
-
 ```html
-<paper-select-or-other label="Label"
-                       items="[[items]]"
-                       disabled$='[[disabled]]'>
-</paper-select-or-other>
+ <paper-select-or-other label="Label"
+                        items="[[items]]"
+                        disabled$='[[disabled]]'>
+ </paper-select-or-other>
 ```
 
 Detailed docs with demo can be found [here](https://meravici.github.io/paper-select-or-other/components/paper-select-or-other/)
