@@ -39,7 +39,7 @@
             }
         </style>
 
-        <dropdown-menu label="[[label]]" items="[[_menuItems]]" selected="{{_selectedItem}}" disabled$="[[disabled]]"
+        <dropdown-menu label="[[label]]" items="[[_menuItems]]" value="{{_selectedItem}}" disabled$="[[disabled]]"
                        hidden$="[[_other]]"></dropdown-menu>
 
         <paper-input label="Other {{label}}" value="{{value}}" hidden$="[[!_other]]" disabled$="{{disabled}}">
@@ -58,13 +58,15 @@
             properties: {
                 items: {
                     type: Array,
-                    notify: true
+                    notify: true,
+                    value: []
                 },
 
                 _menuItems: {
                     type: Array,
                     notify: true,
-                    computed: '_computeMenuItems(items)'
+                    computed: '_computeMenuItems(items)',
+                    value: ["Other"]
                 },
 
                 value: {
@@ -89,35 +91,39 @@
                 }
             },
 
-            ready: function () {
-                this.reset();
+            ready: function (){
+                if(this.value){
+                    this.set("_other", true);
+                    this.$$("dropdown-menu").selectIndex(this.items.length);
+                }
             },
 
             reset: function () {
                 this.$$("paper-input").set("value", "");
+                this.set("_other", false);
                 this.$$("dropdown-menu").reset();
             },
 
             _onSelect: function (selected) {
-                if (selected) {
-                    if (selected == "Other") {
-                        this.set("_other", true);
-                        this.$$("paper-input").set("value", "");
-                        this.$$("paper-input").focus();
+                if(!this._other)
+                    if (selected) {
+                        if (selected == "Other") {
+                            this.set("_other", true);
+                            this.$$("paper-input").set("value", "");
+                            this.$$("paper-input").focus();
+                        } else {
+                            this.set("_other", false);
+                            this.$$("dropdown-menu").focus();
+                            this.$$("paper-input").set("value", selected);
+                        }
                     } else {
-                        this.set("_other", false);
-                        this.$$("dropdown-menu").focus();
-
-                        this.$$("paper-input").set("value", selected);
+                        this.set("_other", true);
+                        this.$$("paper-input").focus();
+                        this.$$("paper-input").set("value", "");
                     }
-                } else {
-                    this.set("_other", true);
-                    this.$$("paper-input").focus();
-                    this.$$("paper-input").set("value", "");
-                }
             },
 
-            _computeMenuItems: function(items){
+            _computeMenuItems: function (items) {
                 var menuItems = items.slice();
                 menuItems.push("Other");
                 return menuItems;

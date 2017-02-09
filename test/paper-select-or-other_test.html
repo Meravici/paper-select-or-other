@@ -19,7 +19,20 @@
     </template>
 </test-fixture>
 
+<test-fixture id="two_elements">
+    <template is="dom-template">
+        <paper-select-or-other items="[[items]]"></paper-select-or-other>
+    </template>
+</test-fixture>
+
+<test-fixture id="with_value">
+    <template>
+        <paper-select-or-other value="test_value"></paper-select-or-other>
+    </template>
+</test-fixture>
+
 <script>
+
     suite('paper-select-or-other', function () {
         test('instantiating the element works', function () {
             var element = fixture('basic');
@@ -44,8 +57,7 @@
         });
 
         test('Should preselect first element', function (done) {
-            var element = fixture('basic');
-            element.items = ['a', 'b'];
+            var element = fixture('two_elements', {items : ['a', 'b']});
             flush(function () {
                 expect(element.value).to.equal('a');
                 done();
@@ -53,8 +65,7 @@
         });
 
         test('Should select element when tapped', function (done) {
-            var element = fixture('basic');
-            element.items = ['a', 'b'];
+            var element = fixture('two_elements', {items : ['a', 'b']});
             flush(function () {
                 MockInteractions.tap(element);
                 MockInteractions.tap(element.querySelectorAll('paper-item')[1]);
@@ -64,8 +75,7 @@
         });
 
         test('Should display empty input when other selected', function (done) {
-            var element = fixture('basic');
-            element.items = ['a', 'b'];
+            var element = fixture('two_elements', {items : ['a', 'b']});
             flush(function () {
                 MockInteractions.tap(element);
                 MockInteractions.tap(element.querySelectorAll('paper-item')[2]);
@@ -77,8 +87,7 @@
         });
 
         test('Value should be input text', function (done) {
-            var element = fixture('basic');
-            element.items = ['a', 'b'];
+            var element = fixture('two_elements', {items : ['a', 'b']});
             flush(function () {
                 MockInteractions.tap(element);
                 MockInteractions.tap(element.querySelectorAll('paper-item')[2]);
@@ -88,9 +97,8 @@
             });
         });
 
-        test('input should be focused when other is selected', function(done){
-            var element = fixture('basic');
-            element.items = ['a', 'b'];
+        test('input should be focused when other is selected', function (done) {
+            var element = fixture('two_elements', {items : ['a', 'b']});
             flush(function () {
                 MockInteractions.tap(element);
                 MockInteractions.tap(element.querySelectorAll('paper-item')[2]);
@@ -99,9 +107,8 @@
             });
         });
 
-        test('DropDown menu should be focused after clear', function(done){
-            var element = fixture('basic');
-            element.items = ['a', 'b'];
+        test('DropDown menu should be focused after clear', function (done) {
+            var element = fixture('two_elements', {items : ['a', 'b']});
             flush(function () {
                 MockInteractions.tap(element);
                 MockInteractions.tap(element.querySelectorAll('paper-item')[2]);
@@ -109,7 +116,16 @@
                 expect(document.activeElement).to.equal(element.$$("dropdown-menu").$$("paper-dropdown-menu").$$('paper-input'));
                 done();
             });
-        })
+        });
+
+        test('Passed value should be set by default', function (done) {
+            var element = fixture('with_value');
+            flush(function () {
+                expect(element.$$('paper-input').hidden).to.equal(false);
+                expect(element.$$('paper-input').value).to.equal("test_value");
+                done();
+            });
+        });
     });
 </script>
 </body>
