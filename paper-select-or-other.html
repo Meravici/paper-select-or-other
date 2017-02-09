@@ -39,12 +39,13 @@
             }
         </style>
 
-        <dropdown-menu label="[[label]]" items="[[_menuItems]]" selected="{{_selectedItem}}" disabled$="[[disabled]]"
+        <dropdown-menu id="menu" label="[[label]]" value="{{_selectedItem}}" disabled$="[[disabled]]"
                        hidden$="[[_other]]"></dropdown-menu>
 
         <paper-input label="Other {{label}}" value="{{value}}" hidden$="[[!_other]]" disabled$="{{disabled}}">
             <paper-icon-button suffix on-tap="reset" icon="clear" alt="clear"
-                               title="clear" disabled$="{{disabled}}"></paper-icon-button>
+                               title="clear" disabled$="{{disabled}}"
+                               hidden$="{{_isClearButtonHidden(items)}}"></paper-icon-button>
         </paper-input>
 
 
@@ -58,13 +59,9 @@
             properties: {
                 items: {
                     type: Array,
-                    notify: true
-                },
-
-                _menuItems: {
-                    type: Array,
                     notify: true,
-                    computed: '_computeMenuItems(items)'
+                    value: [],
+                    observer: '_onItemsSet'
                 },
 
                 value: {
@@ -90,37 +87,61 @@
             },
 
             ready: function () {
-                this.reset();
+                if (this.items.length == 0)
+                    this.$.menu.set('items', ['Other']);
+
+                if (this.value) {
+                    this.set("_other", true);
+                    this.$$("dropdown-menu").selectIndex(this.items.length);
+                }
             },
 
             reset: function () {
                 this.$$("paper-input").set("value", "");
+                this.set("_other", false);
                 this.$$("dropdown-menu").reset();
             },
 
             _onSelect: function (selected) {
-                if (selected) {
-                    if (selected == "Other") {
-                        this.set("_other", true);
-                        this.$$("paper-input").set("value", "");
-                        this.$$("paper-input").focus();
+                if (!this.value || !this._other)
+                    if (selected) {
+                        if (selected == "Other") {
+                            this.set("_other", true);
+                            this.$$("paper-input").set("value", "");
+                            this.$$("paper-input").focus();
+                        } else {
+                            this.set("_other", false);
+                            this.$$("dropdown-menu").focus();
+                            this.$$("paper-input").set("value", selected);
+                        }
                     } else {
-                        this.set("_other", false);
-                        this.$$("dropdown-menu").focus();
-
-                        this.$$("paper-input").set("value", selected);
+                        this.set("_other", true);
+                        this.$$("paper-input").focus();
+                        this.$$("paper-input").set("value", "");
                     }
-                } else {
-                    this.set("_other", true);
-                    this.$$("paper-input").focus();
-                    this.$$("paper-input").set("value", "");
-                }
             },
 
-            _computeMenuItems: function(items){
+            _computeMenuItems: function (items) {
                 var menuItems = items.slice();
                 menuItems.push("Other");
                 return menuItems;
+            },
+
+            _isClearButtonHidden: function (items) {
+                return !items || items.length == 0
+            },
+
+            _onItemsSet: function (items, oldItems) {
+                if(items) {
+                    var menuItems = items.slice();
+                    menuItems.push("Other");
+                    this.$.menu.set('items', menuItems);
+                    this.async(function () {
+                        if (!oldItems || oldItems.length == 0) {
+                            this.$.menu.reset();
+                        }
+                    })
+                }
             }
         });
     </script>

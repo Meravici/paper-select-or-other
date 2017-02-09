@@ -19,6 +19,12 @@
     </template>
 </test-fixture>
 
+<test-fixture id="elemented">
+    <template is="dom-template">
+        <dropdown-menu items="[[items]]" value="{{value}}"></dropdown-menu>
+    </template>
+</test-fixture>
+
 <script>
     suite('dropdown-menu', function () {
         test('instantiating the element works', function () {
@@ -26,59 +32,68 @@
             assert.equal(element.is, 'dropdown-menu');
         });
 
-        test('should preselect "other" when no items', function (done) {
-            var element = fixture('basic');
-            flush(function () {
-                expect(element.selected).to.equal('Other');
-                done();
-            })
-        });
-
-        test('should preselect "other" when empty items', function (done) {
-            var element = fixture('basic');
-            element.items = [];
-            flush(function () {
-                expect(element.selected).to.equal('Other');
-                done();
-            })
-        });
-
         test('should preselect first element of items', function (done) {
-            var element = fixture('basic');
-            element.items = ['first'];
+            var element = fixture('elemented', {items : ['first']});
             flush(function () {
-                expect(element.selected).to.equal('first');
+                expect(element.value).to.equal('first');
                 done();
             })
         });
 
         test('should select other when tapped on it', function(done){
-            var element = fixture('basic');
-            element.items = ['first', 'Other'];
+            var element = fixture('elemented', {items : ['first', 'Other']});
+
             flush(function () {
                 MockInteractions.tap(element);
                 MockInteractions.tap(element);
                 MockInteractions.tap(element.querySelectorAll('paper-item')[1]);
-                expect(element.selected).to.equal('Other');
+                expect(element.value).to.equal('Other');
                 done();
             })
         });
 
         test('should select first element of items after reset', function (done) {
-            var element = fixture('basic');
-            element.items = ['first', 'Other'];
+            var element = fixture('elemented', {items : ['first', 'Other']});
             flush(function () {
                 MockInteractions.tap(element);
                 MockInteractions.tap(element);
                 MockInteractions.tap(element.querySelectorAll('paper-item')[1]);
                 element.reset();
-                expect(element.selected).to.equal('first');
+                expect(element.value).to.equal('first');
                 done();
             })
         });
 
         test('should not crash when calling reset on undefined items', function(){
             var element = fixture('basic');
+        });
+
+        test('should be able to preselect item', function () {
+            var element = fixture('elemented', {items: ['first', 'Other'], value: 'Other'});
+            expect(element.value).to.equal('Other');
+        });
+
+
+        test('should show list on late load', function (done) {
+            var element = fixture('elemented', {items: []});
+            setTimeout(function(){
+                element.items = ['third', 'forth'];
+                flush(function(){
+                    expect(element.value).to.equal('third');
+                    done();
+                });
+            }, 1000);
+        });
+
+        test('should retain value on late load of options', function(done){
+            var element = fixture('elemented', {value: 'forth'});
+            setTimeout(function(){
+                element.items = ['third', 'forth'];
+                flush(function(){
+                    expect(element.value).to.equal('forth');
+                    done();
+                });
+            }, 1000);
 
         })
     });

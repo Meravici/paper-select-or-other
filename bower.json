@@ -1,6 +1,7 @@
 {
   "name": "paper-select-or-other",
   "main": "paper-select-or-other.html",
+  "version": "0.0.5",
   "dependencies": {
     "polymer": "Polymer/polymer#^1.4.0",
     "paper-input": "PolymerElements/paper-input#^1.1.22",

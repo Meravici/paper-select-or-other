@@ -10,7 +10,6 @@
 
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-    <link rel="import" href="../paper-select-or-other.html">
     <link rel="import" href="../dropdown-menu.html">
 
     <style is="custom-style" include="demo-pages-shared-styles">
@@ -18,25 +17,10 @@
 </head>
 <body>
 <div class="vertical-section-container centered">
-    <h3>Basic paper-select-or-other demo</h3>
+    <h3>Basic dropdown-menu demo</h3>
     <demo-snippet>
         <template is="dom-bind" id="Demo">
-            <paper-select-or-other label="Dinosaurs" items="[[dinosaurs]]" value="{{value}}"></paper-select-or-other>
-            Value: {{value}}
-        </template>
-    </demo-snippet>
-
-    <h3>Empty paper-select-or-other demo</h3>
-    <demo-snippet>
-        <template is="dom-bind">
-            <paper-select-or-other label="Empty-list" value="{{value}}"></paper-select-or-other>
-        </template>
-    </demo-snippet>
-
-    <h3>Preselected paper-select-or-other demo</h3>
-    <demo-snippet>
-        <template is="dom-bind" id="Demo2">
-            <paper-select-or-other label="Dinosaurs" items="[[dinosaurs]]" value="{{value}}"></paper-select-or-other>
+            <dropdown-menu label="Dinosaurs" items="[[dinosaurs]]" value="{{value}}"></dropdown-menu>
             Value: {{value}}
         </template>
     </demo-snippet>
@@ -49,14 +33,7 @@
         'diplodocus'
     ];
 
-    Demo2.dinosaurs = [
-        'allosaurus',
-        'brontosaurus',
-        'carcharodontosaurus',
-        'diplodocus'
-    ];
-
-    Demo2.value = "tyrannosaur";
+    Demo.value = "carcharodontosaurus";
 </script>
 </body>
 </html>

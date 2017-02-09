@@ -3,23 +3,35 @@
 <link rel="import" href="../paper-listbox/paper-listbox.html">
 <link rel="import" href="../paper-item/paper-item.html">
 
+<!--
 
+```html
+<dropdown-menu label="Label"
+               items="[[items]]"
+               disabled$='[[disabled]]'>
+</dropdown-menu>
+```
+
+@demo demo/dropdown-menu.html
+-->
 <dom-module id="dropdown-menu">
     <template>
         <style>
             :host {
                 display: block;
-                @apply(--layout-horizontal);
+                @apply(--layout-vertical);
+            }
+
+            :host([hidden]:host, .hidden:host) {
+                display: none;
             }
 
             paper-dropdown-menu {
                 @apply(--layout-flex);
             }
         </style>
-        <paper-dropdown-menu label="{{label}}" disabled$="[[disabled]]"
-                             hidden$="[[hidden]]">
-            <paper-listbox class="dropdown-content" attr-for-selected="data-value" selected="{{selected}}"
-                           disabled$="[[disabled]]">
+        <paper-dropdown-menu label="{{label}}" disabled$="[[disabled]]" hidden$="[[hidden]]">
+            <paper-listbox id="listbox" class="dropdown-content" attr-for-selected="data-value" selected="{{value}}">
                 <template is="dom-repeat" items="{{items}}">
                     <paper-item data-value="{{item}}">{{item}}</paper-item>
                 </template>
@@ -33,36 +45,55 @@
             properties: {
                 items: {
                     type: Array,
-                    observer: "_itemsChanged"
+                    observer: "_onItemsSet"
                 },
 
                 label: {
                     type: String
                 },
 
-                selected: {
+                value: {
                     type: String,
                     notify: true
+                },
+
+                disabled: {
+                    type: Boolean
                 }
             },
 
             ready: function () {
-                this.reset();
+                var that = this;
+                this.async(function () {
+                    Polymer.dom.flush();
+                    if(!this.value)
+                        that.reset();
+                });
             },
-
+//
             reset: function () {
-                this._itemsChanged(this.items);
+                this.$.listbox.selectIndex(0);
             },
 
             focus: function () {
                 this.$$("paper-dropdown-menu").$$('paper-input').focus();
             },
 
-            _itemsChanged: function (items) {
-                if (items && items.length > 0)
-                    this.set("selected", items[0]);
-                else
-                    this.set("selected", "Other");
+            selectIndex: function(index){
+                this.async(function () {
+                    Polymer.dom.flush();
+                    this.$.listbox.selectIndex(index);
+                });
+            },
+
+            _onItemsSet: function(items){
+                this.async(function () {
+                    if(this.value){
+                        this.$.listbox.select(this.value)
+                    }else{
+                        this.$.listbox.selectIndex(0);
+                    }
+                });
             }
         })
     </script>
