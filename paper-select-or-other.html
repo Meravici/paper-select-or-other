@@ -44,7 +44,7 @@
 
         <paper-input label="Other {{label}}" value="{{value}}" hidden$="[[!_other]]" disabled$="{{disabled}}">
             <paper-icon-button suffix on-tap="reset" icon="clear" alt="clear"
-                               title="clear" disabled$="{{disabled}}"></paper-icon-button>
+                               title="clear" disabled$="{{disabled}}" hidden$="{{_isClearButtonHidden(items)}}"></paper-icon-button>
         </paper-input>
 
 
@@ -127,6 +127,10 @@
                 var menuItems = items.slice();
                 menuItems.push("Other");
                 return menuItems;
+            },
+
+            _isClearButtonHidden: function(items){
+                return !items || items.length == 0
             }
         });
     </script>
