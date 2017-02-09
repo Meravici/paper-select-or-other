@@ -39,7 +39,7 @@
             }
         </style>
 
-        <dropdown-menu label="[[label]]" items="[[items]]" selected="{{_selectedItem}}" disabled$="[[disabled]]"
+        <dropdown-menu label="[[label]]" items="[[_menuItems]]" selected="{{_selectedItem}}" disabled$="[[disabled]]"
                        hidden$="[[_other]]"></dropdown-menu>
 
         <paper-input label="Other {{label}}" value="{{value}}" hidden$="[[!_other]]" disabled$="{{disabled}}">
@@ -59,6 +59,12 @@
                 items: {
                     type: Array,
                     notify: true
+                },
+
+                _menuItems: {
+                    type: Array,
+                    notify: true,
+                    computed: '_computeMenuItems(items)'
                 },
 
                 value: {
@@ -109,6 +115,12 @@
                     this.$$("paper-input").focus();
                     this.$$("paper-input").set("value", "");
                 }
+            },
+
+            _computeMenuItems: function(items){
+                var menuItems = items.slice();
+                menuItems.push("Other");
+                return menuItems;
             }
         });
     </script>
