@@ -72,6 +72,18 @@
             var element = fixture('elemented', {items: ['first', 'Other'], value: 'Other'});
             expect(element.value).to.equal('Other');
         });
+
+
+        test('should show list on late load', function (done) {
+            var element = fixture('elemented', {items: []});
+            setTimeout(function(){
+                element.items = ['third', 'forth'];
+                flush(function(){
+                    expect(element.value).to.equal('third');
+                    done();
+                });
+            }, 1000);
+        });
     });
 </script>
 </body>

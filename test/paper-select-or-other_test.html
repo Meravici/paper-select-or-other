@@ -126,6 +126,20 @@
                 done();
             });
         });
+
+        test('should show list on late load', function (done) {
+            var element = fixture('two_elements', {items : []});
+            setTimeout(function(){
+                element.set('items', ['third', 'forth']);
+                flush(function(){
+//                    done();
+                    setTimeout(function(){
+                        expect(element.value).to.equal('third');
+                        done();
+                    }, 2000);
+                });
+            }, 1000);
+        });
     });
 </script>
 </body>
