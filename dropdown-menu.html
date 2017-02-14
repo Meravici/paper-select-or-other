@@ -21,7 +21,7 @@
                 display: block;
                 @apply(--layout-vertical);
             }
-            
+
             :host([hidden]:host, .hidden:host) {
                 display: none;
             }
@@ -87,10 +87,12 @@
             },
 
             _onItemsSet: function(items){
-                var that = this;
                 this.async(function () {
-                    Polymer.dom.flush();
-                    that.reset();
+                    if(this.value){
+                        this.$.listbox.select(this.value)
+                    }else{
+                        this.$.listbox.selectIndex(0);
+                    }
                 });
             }
         })

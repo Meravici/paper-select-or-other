@@ -84,6 +84,18 @@
                 });
             }, 1000);
         });
+
+        test('should retain value on late load of options', function(done){
+            var element = fixture('elemented', {value: 'forth'});
+            setTimeout(function(){
+                element.items = ['third', 'forth'];
+                flush(function(){
+                    expect(element.value).to.equal('forth');
+                    done();
+                });
+            }, 1000);
+
+        })
     });
 </script>
 </body>

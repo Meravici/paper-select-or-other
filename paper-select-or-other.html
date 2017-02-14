@@ -39,12 +39,13 @@
             }
         </style>
 
-        <dropdown-menu label="[[label]]" items="[[_menuItems]]" value="{{_selectedItem}}" disabled$="[[disabled]]"
+        <dropdown-menu id="menu" label="[[label]]" value="{{_selectedItem}}" disabled$="[[disabled]]"
                        hidden$="[[_other]]"></dropdown-menu>
 
         <paper-input label="Other {{label}}" value="{{value}}" hidden$="[[!_other]]" disabled$="{{disabled}}">
             <paper-icon-button suffix on-tap="reset" icon="clear" alt="clear"
-                               title="clear" disabled$="{{disabled}}" hidden$="{{_isClearButtonHidden(items)}}"></paper-icon-button>
+                               title="clear" disabled$="{{disabled}}"
+                               hidden$="{{_isClearButtonHidden(items)}}"></paper-icon-button>
         </paper-input>
 
 
@@ -59,14 +60,8 @@
                 items: {
                     type: Array,
                     notify: true,
-                    value: []
-                },
-
-                _menuItems: {
-                    type: Array,
-                    notify: true,
-                    computed: '_computeMenuItems(items)',
-                    value: ["Other"]
+                    value: [],
+                    observer: '_onItemsSet'
                 },
 
                 value: {
@@ -91,8 +86,11 @@
                 }
             },
 
-            ready: function (){
-                if(this.value){
+            ready: function () {
+                if (this.items.length == 0)
+                    this.$.menu.set('items', ['Other']);
+
+                if (this.value) {
                     this.set("_other", true);
                     this.$$("dropdown-menu").selectIndex(this.items.length);
                 }
@@ -105,7 +103,7 @@
             },
 
             _onSelect: function (selected) {
-                if(!this.value || !this._other)
+                if (!this.value || !this._other)
                     if (selected) {
                         if (selected == "Other") {
                             this.set("_other", true);
@@ -129,8 +127,21 @@
                 return menuItems;
             },
 
-            _isClearButtonHidden: function(items){
+            _isClearButtonHidden: function (items) {
                 return !items || items.length == 0
+            },
+
+            _onItemsSet: function (items, oldItems) {
+                if(items) {
+                    var menuItems = items.slice();
+                    menuItems.push("Other");
+                    this.$.menu.set('items', menuItems);
+                    this.async(function () {
+                        if (!oldItems || oldItems.length == 0) {
+                            this.$.menu.reset();
+                        }
+                    })
+                }
             }
         });
     </script>
