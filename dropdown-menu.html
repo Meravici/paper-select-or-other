@@ -26,8 +26,12 @@
                 display: none;
             }
 
-            paper-dropdown-menu {
-                @apply(--layout-flex);
+            :host([hidden]:host, .hidden:host) {
+                display: none;
+            }
+
+            [hidden] {
+                display: none !important;
             }
         </style>
         <paper-dropdown-menu label="{{label}}" disabled$="[[disabled]]" hidden$="[[hidden]]">

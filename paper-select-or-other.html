@@ -37,6 +37,14 @@
             dropdown-menu, paper-input {
                 @apply(--layout-flex);
             }
+
+            :host([hidden]:host, .hidden:host) {
+                display: none;
+            }
+
+            [hidden] {
+                display: none !important;
+            }
         </style>
 
         <dropdown-menu id="menu" label="[[label]]" value="{{_selectedItem}}" disabled$="[[disabled]]"
